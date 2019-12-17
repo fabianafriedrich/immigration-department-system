@@ -15,7 +15,6 @@ public class DoublyLinked implements DoublyLinkedInterface{
 
     @Override
     public void addFirst(Node newNode) {
-
         //if linked list is empty
         if (isEmpty()) {
             this.first = newNode;
@@ -23,9 +22,13 @@ public class DoublyLinked implements DoublyLinkedInterface{
             size++;
             newNode.setNext(null);
             newNode.setPrevious(null);
+            newNode.getData().setNext(null);
+            newNode.getData().setPrevious(null);
         } else {
             //if linked list is not empty
             newNode.setNext(this.first);
+            newNode.getData().setNext(this.first.getData().getId());
+            this.first.getData().setPrevious(newNode.getData().getId());
             this.first.setPrevious(newNode);
             this.first = newNode;
             size++;
@@ -39,11 +42,15 @@ public class DoublyLinked implements DoublyLinkedInterface{
             this.first = newNode;
             this.last = newNode;
             size++;
+            newNode.getData().setNext(null);
+            newNode.getData().setPrevious(null);
             newNode.setNext(null);
             newNode.setPrevious(null);
         } else {
             newNode.setPrevious(this.last);
+            newNode.getData().setPrevious(this.last.getData().getId());
             this.last.setNext(newNode);
+            this.last.getData().setNext(newNode.getData().getId());
             this.last = newNode;
             size++;
         }
@@ -57,18 +64,19 @@ public class DoublyLinked implements DoublyLinkedInterface{
             int position = 1;
             Node currentPerson = first;
             boolean positionFound = false;
+            People currentData = currentPerson.getData();
 
             if (data.getData().getPriorityL().getPriority() == 1) {
 
                 do {
 
-                    if (currentPerson.getData().getPriorityL().getPriority() == 1) {
-                        if(currentPerson.getNext() == null) {
+                    if (currentData.getPriorityL().getPriority() == 1) {
+                        if(currentPerson.getData().getNext() == null) {
                             addLast(data);
                             positionFound = true;
                         }
                         else{
-                            currentPerson = currentPerson.getNext();
+                            currentData = currentPerson.getNext().getData();
                             position = position + 1;
                         }
 
@@ -83,18 +91,16 @@ public class DoublyLinked implements DoublyLinkedInterface{
 
             }
             else if (data.getData().getPriorityL().getPriority() == 2) {
-
                 do {
 
-                    if (currentPerson.getData().getPriorityL().getPriority() == 1 || currentPerson.getData().getPriorityL().getPriority()  == 2) {
-                        if(currentPerson.getNext() == null) {
+                    if (currentData.getPriorityL().getPriority() == 1 || currentData.getPriorityL().getPriority()  == 2) {
+                        if(currentPerson.getData().getNext() == null) {
                             addLast(data);
                             positionFound = true;
                         }else{
-                            currentPerson = currentPerson.getNext();
+                            currentData = currentPerson.getNext().getData();
                             position += 1;
                         }
-
                     }
                     else {
                         insert(data, position);
@@ -116,14 +122,14 @@ public class DoublyLinked implements DoublyLinkedInterface{
 
     @Override
     public void removeLast() {
-        this.getLast().getPrevious().setNext(null);
+        this.getLast().getPrevious().getData().setNext(null);
         this.last = this.last.getPrevious();
         size--;
     }
 
     @Override
     public void removeFirst() {
-        this.getFirst().getNext().setPrevious(null);
+        this.getFirst().getNext().getData().setPrevious(null);
         this.first = this.first.getNext();
         size--;
     }
@@ -222,19 +228,21 @@ public class DoublyLinked implements DoublyLinkedInterface{
                 currentPerson = currentPerson.getNext();
             }
 
-            Node nextPerson = currentPerson.getNext();
+            Node nodeNextPerson = currentPerson.getNext();
+            People nextPerson = currentPerson.getNext().getData();
 
             currentPerson.setNext(data);
             currentPerson.getData().setNext(data.getData().getId());
-            nextPerson.setPrevious(data);
-            currentPerson.getData().setPrevious(data.getData().getId());
 
-            data.setNext(nextPerson);
-            data.getData().setNext(data.getData().getId());
-            data.setPrevious(nextPerson);
-            data.getData().setPrevious(data.getData().getId());
+            nextPerson.setPrevious(data.getData().getId());
+            nodeNextPerson.setPrevious(data);
+
+            data.getData().setNext(nextPerson.getId());
+            data.setNext(nodeNextPerson);
+
+            data.getData().setPrevious(currentPerson.getData().getId());
+            data.setPrevious(currentPerson);
             size++;
-
         }
         return data.getData().getId();
 
