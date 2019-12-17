@@ -71,7 +71,6 @@ class PacketApplicationTests {
         myList.add(n4);
 
         assertEquals(myList.getSize(), 4);
-
     }
 
     @Test

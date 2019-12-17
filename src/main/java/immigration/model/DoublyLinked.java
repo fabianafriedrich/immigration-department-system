@@ -150,10 +150,15 @@ public class DoublyLinked implements DoublyLinkedInterface{
     private void removeNode(Node tempNode) {
         try{
             tempNode.getPrevious().setNext(tempNode.getNext());
+            tempNode.getPrevious().getData().setNext(tempNode.getNext().getData().getId());
+
             tempNode.getNext().setPrevious(tempNode.getPrevious());
+            tempNode.getNext().getData().setPrevious(tempNode.getPrevious().getData().getId());
+
         }catch (NullPointerException e){
             if(tempNode.getPrevious() == null){
-                first = first.getNext();
+               first = first.getNext();
+               first.setPrevious(null);
             }else{
                 last = last.getPrevious();
             }
