@@ -9,11 +9,11 @@ public interface DoublyLinkedInterface <E> {
     public Long add(Node data);
 
     //remove from the end
-    public void removeLast();
+    public void removeLast()throws Exception;
 
     public void removeFirst();
 
-    public People remove(People person) throws Exception;
+    public People remove(People person) ;
 
     public void removeNPeople(int quantity);
 
@@ -23,7 +23,7 @@ public interface DoublyLinkedInterface <E> {
 
     public int getSize();
 
-    public Node get(int data);
+    public Node get(Long data);
 
     public boolean isEmpty();
 

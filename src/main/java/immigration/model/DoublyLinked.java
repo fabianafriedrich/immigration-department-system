@@ -121,10 +121,14 @@ public class DoublyLinked implements DoublyLinkedInterface{
     }
 
     @Override
-    public void removeLast() {
-        this.getLast().getPrevious().getData().setNext(null);
-        this.last = this.last.getPrevious();
-        size--;
+    public void removeLast() throws Exception{
+        if (size == 1){
+            throw new Exception();
+        } else {
+            this.getLast().getPrevious().getData().setNext(null);
+            this.last = this.last.getPrevious();
+            size--;
+        }
     }
 
     @Override
@@ -135,7 +139,7 @@ public class DoublyLinked implements DoublyLinkedInterface{
     }
 
     @Override
-    public People remove(People person) throws Exception {
+    public People remove(People person) {
         Node tempNode = first;
         while (tempNode.getNext() != null){
             if(person.getId().equals(tempNode.getData().getId())){
@@ -145,23 +149,28 @@ public class DoublyLinked implements DoublyLinkedInterface{
             }
             tempNode = tempNode.getNext();
         }
-        throw new Exception();
+        try {
+            removeLast();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return tempNode.getData();
     }
     private void removeNode(Node tempNode) {
-        try{
+        if(tempNode.getPrevious() != null){
+
             tempNode.getPrevious().setNext(tempNode.getNext());
             tempNode.getPrevious().getData().setNext(tempNode.getNext().getData().getId());
 
             tempNode.getNext().setPrevious(tempNode.getPrevious());
             tempNode.getNext().getData().setPrevious(tempNode.getPrevious().getData().getId());
 
-        }catch (NullPointerException e){
-            if(tempNode.getPrevious() == null){
-               first = first.getNext();
-               first.setPrevious(null);
-            }else{
-                last = last.getPrevious();
-            }
+        }else if(tempNode.getPrevious() == null){
+            first = first.getNext();
+            first.setPrevious(null);
+            first.getData().setPrevious(null);
+        }else{
+            last = last.getPrevious();
         }
     }
 
@@ -170,7 +179,11 @@ public class DoublyLinked implements DoublyLinkedInterface{
             System.err.println("There is less than "+quantity+" elements.");
         }
         for (int i = 0; i < quantity; i++) {
-            removeLast();
+            try {
+                removeLast();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
     @Override
@@ -189,7 +202,7 @@ public class DoublyLinked implements DoublyLinkedInterface{
     }
 
     @Override
-    public Node get(int data) {
+    public Node get(Long data) {
         Node foundNode = first;
 
         if(isEmpty()) {
@@ -204,6 +217,26 @@ public class DoublyLinked implements DoublyLinkedInterface{
             }
         }
         return foundNode;
+    }
+
+    public Long findPosition(Long id){
+
+        if(isEmpty()) {
+            System.err.println("The Queue is empty");
+        }
+
+        Node currentPerson = first;
+        for(Long i = 1L; i <= getSize(); i++) {
+            if(currentPerson.getData().getId() == id) {
+                return i;
+            }
+
+            currentPerson = currentPerson.getNext();
+        }
+
+        //if we didn't find it, then return -1
+        return -1L;
+
     }
 
     @Override

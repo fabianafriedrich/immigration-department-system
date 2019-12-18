@@ -1,8 +1,14 @@
 package immigration.view;
 
+import immigration.model.DoublyLinked;
+import immigration.model.Node;
 import immigration.model.People;
 import immigration.model.PriorityLevels;
+import immigration.repository.PeopleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,21 +16,31 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class user {
+@Component
+public class User {
+
+    @Autowired
+    private PeopleRepository peopleRepository;
+
+    DoublyLinked inmigrationList;
 
     String fName = "", lName = "", passport = "", input = "", inputDate = "", option = "";
     Date doa;
     PriorityLevels priorityLevels;
 
-    public user(){
+    public User(){
+    }
 
+    @PostConstruct
+    public void init(){
+        inmigrationList = new DoublyLinked();
         menu();
     }
 
     public void menu(){
         System.out.println("\n");
         System.out.println("1.Add a new Person");
-        System.out.println("2.See the Position of a Person ");
+        System.out.println("2.See the Position of a Person in the queue");
         System.out.println("3.Delete a Person");
         System.out.println("4.Remove Number of Peoples");
         System.out.println("5.Update Information");
@@ -137,8 +153,6 @@ public class user {
         }
     }
 
-
-
     private void removeNumberOfPeope() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Please input the number of the people you want to remove");
@@ -151,29 +165,45 @@ public class user {
         try {
             id = br.readLine();
             if (id.equals("") || !id.matches("[0-9]+")){
-                System.out.println("Please input a ID valid");
+                System.out.println("Please input a number ID valid");
                 deletePerson();
             }else {
+                Long newID = Long.valueOf(id);
                 System.out.println("Are you sure you want to delete this person? Yes or No" );
                 String delete = br.readLine();
                 if (delete.equals("YES") || delete.equals("Yes") || delete.equals("yes")){
                     //remove person
+                    try {
+                        inmigrationList.remove(inmigrationList.get(newID).getData());
+                        System.out.println("The person has been removed");
+                    }
+                    catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
                     System.out.println("This person were deleted");
                     menu();
                 }else {
                     menu();
                 }
-
-
             }
-
-
         }catch (Exception e){
 
         }
     }
 
     private void seePosition() {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        Long id = null;
+
+        try {
+            System.out.println("What is the id of the new person?");
+            id = Long.valueOf(br.readLine());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("The input must be a number");
+        }
+        System.out.println("The person with the ID " + id + " is in position " + inmigrationList.findPosition(id));
+        menu();
     }
 
     public static boolean validDate(String strDate){
@@ -184,8 +214,7 @@ public class user {
         /* Create Date object
          * parse the string into date
          */
-        try
-        {
+        try {
             Date javaDate = sdfrmt.parse(strDate);
         }
         /* Date format is invalid */
@@ -244,14 +273,24 @@ public class user {
             } else if (input.equals("3")) {
                 priorityLevels = PriorityLevels.LOW;
             }else {
+                System.err.println("We need a value between 1 and 3.");
                 addNewPerson();
             }
 
             System.out.println("Would like to add this person to the queue? 1.Yes or 2.No .Choose a number");
             option = br.readLine();
             if (option.equals("1")) {
+                People person = new People(fName, lName, doa ,passport, priorityLevels);
+                try {
+                    Long addedId = inmigrationList.add(new Node(person));
+                    System.out.println("The ID of the new person is " + addedId);
+                }
+                catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                //saving Person in H2 Database
+                peopleRepository.save(person);
                 System.out.println("This person has been added, Thank you");
-                //SAVE IT ON THE QUEUE AND DATABASE
                 menu();
             } else {
                 menu();
@@ -261,15 +300,14 @@ public class user {
         }catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
 
-    public static void main(String[] args) {
-
-        new user();
-
-    }
+//    public static void main(String[] args) {
+//
+//        new User();
+//
+//    }
 
 
 

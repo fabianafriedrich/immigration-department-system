@@ -9,6 +9,8 @@ import java.util.Date;
 @Table(name = "people")
 public class People {
 
+    private static Long counter = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,16 +31,27 @@ public class People {
     @Column(name ="priority_level")
     private PriorityLevels priorityL;
 
-    @Column(name ="previous")
+    @Column(name ="previous", nullable = true)
     private Long previous;
 
-    @Column(name ="next")
+    @Column(name ="next", nullable = true)
     private Long next;
 
     public People(){
     }
     public People(Long id, String fName, String lName, Date doa, String nPassport, PriorityLevels priorityL) {
         this.id = id;
+        this.fName = fName;
+        this.lName = lName;
+        this.doa = doa;
+        this.nPassport = nPassport;
+        this.priorityL = priorityL;
+
+    }
+
+    public People(String fName, String lName, Date doa, String nPassport, PriorityLevels priorityL) {
+        this.id = counter;
+        counter++;
         this.fName = fName;
         this.lName = lName;
         this.doa = doa;

@@ -71,6 +71,9 @@ class PacketApplicationTests {
         myList.add(n4);
 
         assertEquals(myList.getSize(), 4);
+
+        myList.get(2L);
+        System.out.println(myList.get(2L));
     }
 
     @Test
@@ -89,9 +92,10 @@ class PacketApplicationTests {
     public void remove() throws Exception {
         myList.add(n1);
         myList.add(n2);
+        myList.add(n3);
+        assertEquals(myList.getSize(), 3);
+        myList.remove(n3.getData());
         assertEquals(myList.getSize(), 2);
-        myList.remove(n1.getData());
-        assertEquals(myList.getSize(), 1);
     }
 
     @Test
@@ -108,12 +112,11 @@ class PacketApplicationTests {
 
         // testing if was persisted in Data Base
         if(!myList.isEmpty()){
-            for(int i = 0; i <= myList.getSize(); i++) {
+            for(Long i = 0L; i < myList.getSize(); i++) {
                 People p = myList.get(i).getData();
                 peopleRepository.save(p);
             }
         }
-
         // when
         People found01 = peopleRepository.findById(alex.getId()).orElse(null);
 
