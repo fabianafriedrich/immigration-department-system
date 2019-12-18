@@ -34,10 +34,10 @@ public class People {
     @Column(name ="priority_level")
     private PriorityLevels priorityL;
 
-    @Column(name ="previous", nullable = true)
+    @Transient
     private Long previous;
 
-    @Column(name ="next", nullable = true)
+    @Transient
     private Long next;
 
     /*Default constructor*/

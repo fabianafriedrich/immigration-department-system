@@ -1,0 +1,8 @@
+1-Create imigration-department-system database in your localhost mySQL.
+2-To change the connection to the database, access the application.properties configuration file that is inside the resources package.
+3-Put your Database settings. ie: user, password, database name.
+4-To run the application you have to run the main method of the PacketApplication class that is inside the immigration package.
+
+The application is using the Java8 with Spring Framework(Spring Boot, Spring Data JPA) and mySQL database.
+I am not sending a Database because it is just run the application that the tables will be created automatically.
+You will be able to add all the data using the system.

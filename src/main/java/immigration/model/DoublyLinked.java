@@ -161,7 +161,8 @@ public class DoublyLinked implements DoublyLinkedInterface{
 
     /*Removing a element on the first position*/
     @Override
-    public void removeFirst() throws Exception {
+    public Long removeFirst() throws Exception {
+        Long id = first.getData().getId();
         //If the list onlly have a size 1 it will throw a error
         if (size == 1){
             throw new Exception();
@@ -171,6 +172,7 @@ public class DoublyLinked implements DoublyLinkedInterface{
             this.first = this.first.getNext();
             size--;
         }
+        return id;
     }
 
     /*Removing a element*/
@@ -183,6 +185,7 @@ public class DoublyLinked implements DoublyLinkedInterface{
             if(person.getId().equals(temp.getData().getId())){
                 //It will remove from the size and it will call the removeNode() to remove the element
                 size--;
+
                 removeNode(temp);
                 return temp.getData();
             }

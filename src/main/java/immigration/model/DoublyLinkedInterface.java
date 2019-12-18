@@ -15,7 +15,7 @@ public interface DoublyLinkedInterface <E> {
     public void removeLast()throws Exception;
 
     /*Removing a element on the first position*/
-    public void removeFirst() throws Exception;
+    public Long removeFirst() throws Exception;
 
     /*Removing a element*/
     public People remove(People person) ;

@@ -215,7 +215,9 @@ public class User {
             removeFirst = br.readLine();
             if (removeFirst.equals("YES") || removeFirst.equals("Yes") || removeFirst.equals("yes")){
                 //remove person
-                inmigrationList.removeFirst();
+                Long id = inmigrationList.removeFirst();
+                //deleting Person in Database
+                peopleRepository.deleteById(id);
                 System.out.println("First person has been removed");
                 menu();
             }else {
@@ -246,7 +248,10 @@ public class User {
                 if (delete.equals("YES") || delete.equals("Yes") || delete.equals("yes")){
                     //remove person
                     try {
+                        //deleting Person in Database
+                        peopleRepository.deleteById(newID);
                         inmigrationList.remove(inmigrationList.get(newID).getData());
+
                         System.out.println("The person has been removed");
                     }
                     catch (Exception e) {
