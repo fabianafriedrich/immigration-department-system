@@ -4,6 +4,8 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.Date;
 
+
+/*Creating class People and Table People in database*/
 @Data
 @Entity
 @Table(name = "people")
@@ -11,6 +13,7 @@ public class People {
 
     private static Long counter = 1L;
 
+    /*@Id auto increment in database*/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,8 +40,10 @@ public class People {
     @Column(name ="next", nullable = true)
     private Long next;
 
+    /*Default constructor*/
     public People(){
     }
+    /*Parametrized Constructor initiating variables*/
     public People(Long id, String fName, String lName, Date doa, String nPassport, PriorityLevels priorityL) {
         this.id = id;
         this.fName = fName;
@@ -48,7 +53,7 @@ public class People {
         this.priorityL = priorityL;
 
     }
-
+    /*Parametrized Constructor initiating variables*/
     public People(String fName, String lName, Date doa, String nPassport, PriorityLevels priorityL) {
         this.id = counter;
         counter++;
@@ -57,6 +62,16 @@ public class People {
         this.doa = doa;
         this.nPassport = nPassport;
         this.priorityL = priorityL;
+
+    }
+    /*Parametrized Constructor initiating variables*/
+    public People(String fName, String lName, Date doa, String nPassport) {
+        this.id = counter;
+        counter++;
+        this.fName = fName;
+        this.lName = lName;
+        this.doa = doa;
+        this.nPassport = nPassport;
 
     }
 

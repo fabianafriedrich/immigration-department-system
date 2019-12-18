@@ -1,5 +1,7 @@
 package immigration.model;
 
+/*Enum Priority Levels*/
+
 public enum PriorityLevels {
     HIGH(1),
     MEDIUM(2),
@@ -7,6 +9,7 @@ public enum PriorityLevels {
 
     private final int priority;
 
+    /*Parametrized Constructor*/
     PriorityLevels(int priority) {
         this.priority = priority;
     }

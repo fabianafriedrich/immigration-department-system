@@ -22,6 +22,7 @@ class PacketApplicationTests {
     static People alex, fabi, pedro, peopleDB, rach;
     static Node n1, n2, n3, n4;
 
+    //Before run any test
     @BeforeAll
     public static void init(){
         myList = new DoublyLinked();
@@ -39,9 +40,11 @@ class PacketApplicationTests {
 
     }
 
+    // Dependence injection
     @Autowired
     private PeopleRepository peopleRepository;
 
+    // adding at start
     @Test
     @Order(1)
     public void addAtTheStartList() {
@@ -52,6 +55,7 @@ class PacketApplicationTests {
         assertEquals(n1, myList.getFirst());
     }
 
+    //adding on the last
     @Test
     @Order(2)
     public void addAtTheEndList() {
@@ -63,6 +67,7 @@ class PacketApplicationTests {
 
     }
 
+    //adding
     @Test
     public void Add(){
         myList.add(n1);
@@ -76,9 +81,10 @@ class PacketApplicationTests {
         System.out.println(myList.get(2L));
     }
 
+    //removing at starts
     @Test
     @Order(4)
-    public void removeAtTheStartList() {
+    public void removeAtTheStartList() throws Exception {
 
         Node next = myList.getFirst().getNext();
         //Testing remove at the start in the List
@@ -87,6 +93,7 @@ class PacketApplicationTests {
 
     }
 
+    //adding and removing
     @Test
     @Order(4)
     public void remove() throws Exception {
@@ -98,6 +105,7 @@ class PacketApplicationTests {
         assertEquals(myList.getSize(), 2);
     }
 
+    //getting size
     @Test
     @Order(5)
     public void size() {
@@ -122,16 +130,6 @@ class PacketApplicationTests {
 
         // then
         assertEquals(found01.getFName(),alex.getFName());
-    }
-
-    @Test
-    public void deleteDB(){
-
-    }
-
-    @Test
-    public void getAllDB(){
-
     }
 
 
