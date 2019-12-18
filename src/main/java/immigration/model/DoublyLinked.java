@@ -1,10 +1,7 @@
 package immigration.model;
-
-import immigration.view.User;
-import org.springframework.beans.factory.annotation.Autowired;
-
 /*
  * @author Fabiana Friedrich
+ *
  */
 public class DoublyLinked implements DoublyLinkedInterface{
 

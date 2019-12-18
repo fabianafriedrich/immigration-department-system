@@ -104,6 +104,8 @@ public class User {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         Long uniqueN ;
         String id ="";
+        Node updatePerson = null;
+        Node temp = null;
 
         try {
             //Collecting Information of the person
@@ -115,67 +117,84 @@ public class User {
             }else if (id.matches("[0-9]+")){
                 //ID valid
                 uniqueN = Long.valueOf(id);
-                System.out.println("Update Information of the person.");
-                System.out.println("Please insert first name");
-                //name
-                fName = br.readLine();
-                String regex = "^[a-zA-Z]+$";
-                if (fName.equals("") || !fName.matches(regex)) {
-                    System.out.println("Input can't be empty or a number, try again ");
-                    addNewPerson();
-                }
-                System.out.println("Please insert last name");
-                ///surname
-                lName = br.readLine();
-                if (lName.equals("") || !lName.matches(regex)) {
-                    System.out.println("Input can't be empty or a number, try again ");
-                    addNewPerson();
-                }
-
-                System.out.println("Please insert date of arrival (dd/MM/yyyy)");
-                inputDate = br.readLine();
-                if (inputDate.equals("")) {
-                    System.out.println("Input can't be empty  try again ");
-                    addNewPerson();
-                } else {
-                    //validating the date format
-                    if (validDate(inputDate) == true) {
-                        //date
-                        doa = new Date(inputDate);
-                    } else {
-                        System.out.println("Input is not valid as a Date ");
-                        addNewPerson();
+                updatePerson = inmigrationList.get(uniqueN);
+                if(updatePerson == null ){
+                    System.err.println("Id not found");
+                    menu();
+                }else{
+                    System.out.println("Update Information of the person.");
+                    System.out.println("Please insert first name");
+                    //name
+                    fName = br.readLine();
+                    String regex = "^[a-zA-Z]+$";
+                    if (fName.equals("") || !fName.matches(regex)) {
+                        System.out.println("Input can't be empty or a number, try again ");
+                        updateInfo();
                     }
-                }
-                System.out.println("Please insert passport number");
-                //passport
-                passport = br.readLine();
-                if (passport.equals("")) {
-                    System.out.println("Input can't be empty, try again ");
-                    addNewPerson();
-                }
+                    System.out.println("Please insert last name");
+                    ///surname
+                    lName = br.readLine();
+                    if (lName.equals("") || !lName.matches(regex)) {
+                        System.out.println("Input can't be empty or a number, try again ");
+                        updateInfo();
+                    }
 
-                System.out.println("Would like to update this person information? 1.Yes or 2.No .Choose a number");
-                //Making sure the user wants to update the person info
-                option = br.readLine();
-                if (option.equals("1")) {
+                    System.out.println("Please insert date of arrival (dd/MM/yyyy)");
+                    inputDate = br.readLine();
+                    if (inputDate.equals("")) {
+                        System.out.println("Input can't be empty  try again ");
+                        updateInfo();
+                    } else {
+                        //validating the date format
+                        if (validDate(inputDate) == true) {
+                            //date
+                            doa = new Date(inputDate);
+                        } else {
+                            System.out.println("Input is not valid as a Date ");
+                            updateInfo();
+                        }
+                    }
+                    System.out.println("Please insert passport number");
+                    //passport
+                    passport = br.readLine();
+                    if (passport.equals("")) {
+                        System.out.println("Input can't be empty, try again ");
+                        updateInfo();
+                    }
 
+                    System.out.println("Would like to update this person information? 1.Yes or 2.No .Choose a number");
+                    //Making sure the user wants to update the person info
+                    option = br.readLine();
+                    if (option.equals("1")) {
+
+                        PriorityLevels originalPriority = updatePerson.getData().getPriorityL();
+
+                        temp = updatePerson;
+
+                        updatePerson.getData().setId(uniqueN);
+                        updatePerson.getData().setFName(fName);
+                        updatePerson.getData().setLName(lName);
+                        updatePerson.getData().setNPassport(passport);
+                        updatePerson.getData().setPriorityL(originalPriority);
+
+
+                        inmigrationList.remove(temp.getData());
+                        inmigrationList.add(updatePerson);
+                    }
                     System.out.println("This person has been updated, Thank you");
                     //SAVE IT ON THE QUEUE AND DATABASE
                     menu();
-                } else {
-                    menu();
-                }
-
-            }else {
-                //the id is not valid
-                System.out.println("Please input has to be an id valid");
-                updateInfo();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        }else {
+            //the id is not valid
+            System.out.println("Please input has to be an id valid");
+            updateInfo();
         }
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+}
 
     /*Remove of the last N number*/
     private void removeNumberOfPeope() {

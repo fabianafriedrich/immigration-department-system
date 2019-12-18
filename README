@@ -4,5 +4,12 @@
 4-To run the application you have to run the main method of the PacketApplication class that is inside the immigration package.
 
 The application is using the Java8 with Spring Framework(Spring Boot, Spring Data JPA) and mySQL database.
-I am not sending a Database because it is just run the application that the tables will be created automatically.
+Once the application is running the Database will be created automatically.
 You will be able to add all the data using the system.
+
+To run in the terminal:
+* cd immigration-department-system
+* mvn clean install
+* java -jar target/*.jar
+
+
